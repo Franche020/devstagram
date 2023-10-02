@@ -37,4 +37,9 @@ class ImagenController extends Controller
         return response()->json(['imagen'=> $nombreImagen]);
         
     }
+    // La tarea uploadsCleanup limpia las imagenes de la carpeta cleanup que no tienen correlacion con una entrada de la base de datos
+    public function uploadsCleanup () 
+    {
+        // TODO App\Console\Kernel.php / https://laravel.com/docs/10.x/scheduling#main-content
+    }
 }

@@ -1,25 +1,46 @@
 import Dropzone from "dropzone";
 
-Dropzone.autoDiscover = false;
+// Comprobacion para si dropzone existe
+if(document.getElementById('dropzone')){
 
-const dropzone = new Dropzone('#dropzone', {
-    dictDefaultMessage: 'Sube tu Imagen',
-    acceptedFiles: '.png,.jpg,.jpeg,.gif',
-    addRemoveLinks: true,
-    dictRemoveFile: 'Borrar Archivo',
-    maxFiles: 1,
-    uploadMultiple: false
-})
-
-dropzone.on('sending',function(files,xhr,formData){
-    console.log(formData);
-})
-dropzone.on('success', function(file,response){
-    console.log(response);
-})
-dropzone.on('error', function(file,message){
-    console.log(message);
-})
-dropzone.on('removedfile',function(file,message){
-    console.log(message);
-})
+    Dropzone.autoDiscover = false;
+    let uploadedImg = "";
+    
+    const dropzone = new Dropzone('#dropzone', {
+        dictDefaultMessage: 'Sube tu Imagen',
+        acceptedFiles: '.png,.jpg,.jpeg,.gif',
+        addRemoveLinks: true,
+        dictRemoveFile: 'Borrar Archivo',
+        maxFiles: 1,
+        uploadMultiple: false,
+    
+        init: function() {
+            if(document.querySelector('[name="imagen"]').value.trim()){
+                const fileName = document.querySelector('[name="imagen"]').value.trim()
+                const file = {name: fileName, size: 1234, url:`/uploads/${fileName}`};  
+                
+                let mockfile = {
+                    name: file.name,
+                    size: file.size,
+                };
+    
+                this.displayExistingFile(mockfile, file.url);
+            }
+        }
+    })
+    
+    
+    dropzone.on('success', function(file,response){
+        uploadedImg = response.imagen;
+        //console.log(response.imagen);
+        document.querySelector('[name="imagen"]').value = response.imagen;
+    
+    })
+    
+    dropzone.on('removedfile',function(file,message){
+        console.log(uploadedImg);
+        document.querySelector('[name="imagen"]').value = "";
+    
+        // Todo ELIMINAR FOTO uploadedImg Recomendado comprobar la ID del usuario y que la imagen no este asociada a ninguna otra ID
+    })
+}// Fin dropzone
