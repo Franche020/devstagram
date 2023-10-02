@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ImagenController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
@@ -30,8 +31,11 @@ Route::post('/logout', [LogoutController::class, 'store'])->name('logout');
 
 
 Route::get('/{user:username}', [PostController::class,'index'])->name('post.index');
-Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
-Route::post('/post/store', [PostController::class, 'store'])->name('post.store');
+Route::get('/posts/create', [PostController::class, 'create'])->name('post.create');
+Route::post('/posts/store', [PostController::class, 'store'])->name('post.store');
+Route::get('/{user:username}/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
+Route::post('/{user:username}/posts/{post}', [ComentarioController::class, 'store'])->name('comentarios.store');
 
 
 Route::post('/imagenes', [ImagenController::class, 'store'])->name('imagenes.store');
