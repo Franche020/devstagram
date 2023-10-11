@@ -56,4 +56,10 @@ class Post extends Model
     {
         return $this->hasMany(Like::class);
     }
+
+    public function checkLike(User $user)
+    {
+        // Esto funciona gracias a las relaciones
+        return $this->likes->contains('user_id', $user->id);
+    }
 }
