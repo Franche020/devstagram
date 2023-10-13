@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\PerfilController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LikeController;
@@ -33,8 +34,12 @@ Route::get('/login', [LoginController::class , 'index'])->name('login');
 Route::post('/login', [LoginController::class , 'store']);
 Route::post('/logout', [LogoutController::class, 'store'])->name('logout');
 
+
+// Rutas para el perfil
+Route::get('/editar-perfil', [PerfilController::class,'index'])->name('perfil.index');
+Route::post('/editar-perfil', [PerfilController::class,'store'])->name('perfil.store');
+
 // Gestion de post
-Route::get('/{user:username}', [PostController::class,'index'])->name('post.index');
 Route::get('/posts/create', [PostController::class, 'create'])->name('post.create');
 Route::post('/posts/store', [PostController::class, 'store'])->name('post.store');
 Route::get('/{user:username}/posts/{post}', [PostController::class, 'show'])->name('posts.show');
@@ -50,6 +55,10 @@ Route::post('/imagenes', [ImagenController::class, 'store'])->name('imagenes.sto
 Route::post('/posts/{post}/likes', [LikeController::class,'store'])->name('post.likes.store');
 Route::delete('/posts/{post}/likes', [LikeController::class,'destroy'])->name('post.likes.destroy');
 
-// Rutas para el perfil
-Route::get('/{user:username}/editar-perfil', [PerfilController::class,'index'])->name('perfil.index');
-Route::post('/{user:username}/editar-perfil', [PerfilController::class,'store'])->name('perfil.store');
+// Siguiendo usuarios
+Route::post('/{user:username}/follow', [FollowerController::class, 'store'])->name('users.follow');
+Route::delete('/{user:username}/unfollow', [FollowerController::class, 'destroy'])->name('users.unfollow');
+
+// Dashboard
+    //* ESTA RUTA HA DE ESTAR AL FINAL PARA EVITAR ERRORES DE ENRUTADO
+Route::get('/{user:username}', [PostController::class,'index'])->name('post.index');

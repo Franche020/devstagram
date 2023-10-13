@@ -22,8 +22,8 @@ class RegisterController extends Controller
         // Validacion
         $this->validate($request, [
             "name" => "required|max:30",
-            "username" => "required|alpha_dash|unique:users|min:3|max:20",
-            "email" => "required|unique:users|email|max:60",
+            'username' => ["required","alpha_dash","unique:users,username","min:3","max:20", "not_in:editar-perfil,login,register"],
+            "email" => ["required","unique:users","email","max:60"],
             "password" => "required|confirmed|",
         ]);
         

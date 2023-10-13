@@ -23,9 +23,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Gate para el acceso a la edicion de perfil
-        Gate::define('perfil-edit', function(User $user, $perfil){
-            return $user->id === $perfil->id;
-        });
+        
     }
 }

@@ -83,8 +83,27 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    // Relacion con los likes de los usuarios
     public function likes()
     {
         return $this->hasMany(Like::class);
+    }
+
+    // Relacion para los seguidores, testeado usando User::class si uso Folower::class el siguiente metodo no funciona ya que creo no se pasa el usuario a la busqueda
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id');
+    }
+
+    // Relacion inversa a la anterior para poder contabilizar a cuantos sigue un usuario
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id','user_id');
+    }
+
+    // Comprobacion si el usuario ya sigue a otro usuario
+    public function siguiendo(User $user)
+    {
+        return $this->followers->contains($user->id);
     }
 }
