@@ -3,9 +3,9 @@
 @section('titulo')
     @auth
         @if ($user->id === auth()->user()->id)
-        Tu Cuenta
+            Tu Cuenta
         @else
-        @<?php echo $user->username; ?>
+            @<?php echo $user->username; ?>
         @endif
     @endauth
     @guest
@@ -15,18 +15,18 @@
 
 @section('contenido')
     <div class="flex justify-center">
-        <div class="w-full md:w-8/12 lg:w-6/12 flex flex-col items-center md:flex-row">
-            <div class="w-8/12 lg:w-6/12 px-5">
+        <div class="flex w-full flex-col items-center md:w-8/12 md:flex-row lg:w-6/12">
+            <div class="w-8/12 px-5 lg:w-6/12">
                 <img src="{{ $user->imagen ? asset('userimg') . '/' . $user->imagen : asset('img/usuario.svg') }}"
                     alt="imagen usuario default">
             </div>
-            <div class="md:w-8/12 lg:w-6/12 px-5 flex flex-col items-center md:items-start md:justify-center py-10 md:py-10">
+            <div class="flex flex-col items-center px-5 py-10 md:w-8/12 md:items-start md:justify-center md:py-10 lg:w-6/12">
                 <div class="flex items-center gap-2">
-                    <p class="text-gray-700 text-2xl">{{ $user->username }}</p>
+                    <p class="text-2xl text-gray-700">{{ $user->username }}</p>
                     @auth
                         @if ($user->id === auth()->user()->id)
-                            <a href="{{ route('perfil.index') }}" class="text-gray-500 hover:text-gray-600 cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <a href="{{ route('perfil.index') }}" class="cursor-pointer text-gray-500 hover:text-gray-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
                                     <path
                                         d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
                                 </svg>
@@ -34,15 +34,15 @@
                         @endif
                     @endauth
                 </div>
-                <p class="text-gray-500 text-sm mb-3 mt-5 font-bold">
-                    {{$user->followers->count()}}
+                <p class="mb-3 mt-5 text-sm font-bold text-gray-500">
+                    {{ $user->followers->count() }}
                     <span class="font-normal"> @choice('Seguidor|Seguidores', $user->followers->count())</span>
                 </p>
-                <p class="text-gray-500 text-sm mb-3 font-bold">
-                    {{$user->following->count()}}
+                <p class="mb-3 text-sm font-bold text-gray-500">
+                    {{ $user->following->count() }}
                     <span class="font-normal"> Siguiendo</span>
                 </p>
-                <p class="text-gray-500 text-sm mb-3 font-bold">
+                <p class="mb-3 text-sm font-bold text-gray-500">
                     {{ $user->posts()->count() }}
                     <span class="font-normal"> Posts</span>
                 </p>
@@ -52,7 +52,7 @@
                             <form action="{{ route('users.follow', $user) }}" method="POST">
                                 @csrf
                                 <input
-                                    class="bg-blue-600 text-white uppercase rounded-lg px-3 py-1 text-xs font-bold cursor-pointer"
+                                    class="cursor-pointer rounded-lg bg-blue-600 px-3 py-1 text-xs font-bold uppercase text-white"
                                     type="submit" value="Seguir">
                             </form>
                         @else
@@ -60,7 +60,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <input
-                                    class="bg-red-600 text-white uppercase rounded-lg px-3 py-1 text-xs font-bold cursor-pointer"
+                                    class="cursor-pointer rounded-lg bg-red-600 px-3 py-1 text-xs font-bold uppercase text-white"
                                     type="submit" value="Dejar de seguir">
                             </form>
                         @endif
@@ -72,26 +72,9 @@
     </div>
 
     <section class="container mx-auto mt-10">
-        <h2 class="text-4xl text-center font-black my-10">Publicaciones</h2>
-
-        @if ($posts->count())
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-5">
-                @foreach ($posts as $post)
-                    <div>
-                        <a href="{{ route('posts.show', ['user' => $user, 'post' => $post]) }}">
-                            <img src="{{ asset('uploads') . '/' . $post->imagen }}"
-                                alt=" Imagen del post {{ $post->titulo }}">
-                        </a>
-                    </div>
-                @endforeach
-            </div>
-
-            <div>
-                {{ $posts->links('pagination::tailwind') }}
-            </div>
-        @else
-            <p class="text-gray-600 uppercase text-sm text-center font-bold">No hay Posts</p>
-        @endif
+        <h2 class="my-10 text-center text-4xl font-black">Publicaciones</h2>
+        
+        <x-listar-post :posts="$posts" />
 
     </section>
 @endsection

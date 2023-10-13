@@ -1,9 +1,8 @@
 @extends('layouts.app')
-
 @section('titulo')
-    Principal
+    Pagina Principal
 @endsection
 
 @section('contenido')
-    
+    <x-listar-post :posts="$posts" />
 @endsection

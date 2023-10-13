@@ -19,7 +19,7 @@ class PostController extends Controller
         // Trae los post
         //$posts = Post::where('user_id', $user->id)->get();
         // Trae los post con paginacion y limite 5(cada pagina incluye 5 items)
-        $posts = Post::where("user_id", $user->id)->paginate(20);
+        $posts = Post::where("user_id", $user->id)->latest()->paginate(20);
         // pagina principal del usuario con su informacion y post
         return view("dashborad", [
             "user" => $user,
