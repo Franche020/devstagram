@@ -8,6 +8,7 @@
     @vite('resources/js/app.js')
     <title>Devstagram - @yield('titulo')</title>
     @stack('styles')
+    @livewireStyles
 
 
 </head>
@@ -63,6 +64,7 @@
         DevStagram - Todos los derechos reservados {{ now()->year }}
     </footer>
 
+    @livewireScripts
 </body>
 
 </html>
